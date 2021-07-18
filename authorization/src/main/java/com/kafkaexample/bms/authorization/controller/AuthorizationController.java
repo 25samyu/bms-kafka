@@ -48,25 +48,21 @@ public class AuthorizationController {
 
 	@GetMapping("/validate")
 	public ResponseEntity<?> validateToken(@RequestHeader("Authorization") String token) {
-		try {
-			if (token == null) {
 
-				return new ResponseEntity<>("Not Accessible", HttpStatus.FORBIDDEN);
+		if (token.length() < 10) {
+
+			return new ResponseEntity<>("Not Accessible", HttpStatus.FORBIDDEN);
+		} else {
+			String token1 = token.substring(7);
+			if (jwtUtil.validateToken(token1)) {
+
+				return new ResponseEntity<>("Accessible", HttpStatus.OK);
 			} else {
-				String token1 = token.substring(7);
-				if (jwtUtil.validateToken(token1)) {
+				return new ResponseEntity<>("Not Accessible", HttpStatus.FORBIDDEN);
 
-					return new ResponseEntity<>("Accessible", HttpStatus.OK);
-				} else {
-					return new ResponseEntity<>("Not Accessible", HttpStatus.FORBIDDEN);
-
-				}
 			}
-		} catch (Exception e) {
-
-			return new ResponseEntity<>("Error", HttpStatus.INTERNAL_SERVER_ERROR);
-
 		}
+
 	}
 
 }

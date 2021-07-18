@@ -7,7 +7,7 @@ import com.kafkaexample.bms.authorization.service.DetailsService;
 
 @RunWith(Suite.class)
 
-@Suite.SuiteClasses({ AuthorizationControllerTest.class, DetailsService.class })
+@Suite.SuiteClasses({ AuthorizationControllerTest.class, DetailsServiceTest.class })
 
 public class AuthorizationApplicationTests {
 }
