@@ -1,13 +1,11 @@
 package com.kafkaexample.bms.loan;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 
-@SpringBootTest
-class LoanApplicationTests {
+@RunWith(Suite.class)
 
-	@Test
-	void contextLoads() {
-	}
+@Suite.SuiteClasses({ LoanServiceControllerTest.class, LoanServiceDaoImplTest.class })
 
+public class LoanApplicationTests {
 }

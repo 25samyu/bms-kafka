@@ -35,7 +35,7 @@ public class LoanController {
 		return new ResponseEntity<>(loanService.applyLoan(loan), HttpStatus.OK);
 	}
 
-	@GetMapping("/viewLoans")
+	@GetMapping("/viewLoan")
 	public ResponseEntity<List<Loan>> viewLoans(@RequestHeader("Authorization") String token,
 			@RequestParam Long accountNumber) {
 		if (!loanService.validateToken(token))
