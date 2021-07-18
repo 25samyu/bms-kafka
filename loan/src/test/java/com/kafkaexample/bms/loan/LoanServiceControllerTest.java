@@ -22,6 +22,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kafkaexample.bms.loan.controller.LoanController;
 import com.kafkaexample.bms.loan.model.Loan;
@@ -97,12 +98,9 @@ public class LoanServiceControllerTest {
 
 	}
 
-	public static String asJsonString(Loan loan) {
-		try {
-			return new ObjectMapper().writeValueAsString(loan);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+	public static String asJsonString(Loan loan) throws JsonProcessingException {
+		return new ObjectMapper().writeValueAsString(loan);
+
 	}
 
 }

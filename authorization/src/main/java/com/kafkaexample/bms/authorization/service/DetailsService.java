@@ -23,18 +23,15 @@ public class DetailsService implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String uname) {
-		LOGGER.info("Start - loadUserByUsername");
 		try {
 			UserCredentials userCredentials = userCredentialsRepository.findById(uname).orElse(null);
 			if (userCredentials != null) {
 				return new User(userCredentials.getUsername(), userCredentials.getPassword(), new ArrayList());
 			} else {
-				LOGGER.info("End - loadUserByUsername - Username Not Found");
 
 				return null;
 			}
 		} catch (Exception e) {
-			LOGGER.info("Exception - loadUserByUsername - InternalServerError");
 
 			throw e;
 		}

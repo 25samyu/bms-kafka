@@ -42,12 +42,12 @@ public class CustomerServiceDaoImpl implements CustomerServiceDao {
 			customerRepository.save(customer);
 			UserCredentials userCredentials = new UserCredentials(customer.getUsername(), customer.getPassword(), null);
 			userCredentialsProducer.send(USER_CREDENTIALS_TOPIC, userCredentials);
-			if (topic.equals(REGISTER_CUSTOMER_TOPIC)) {
+			if (topic.equals("REGISTER_CUSTOMER_TOPIC")) {
 				toSend[1] = "Registered Successfully";
 				customerMessageProducer.send(REGISTER_CUSTOMER_MESSAGE_TOPIC, toSend);
 				return true;
 
-			} else if (topic.equals(UPDATE_CUSTOMER_TOPIC)) {
+			} else if (topic.equals("UPDATE_CUSTOMER_TOPIC")) {
 				toSend[1] = "Updated Successfully";
 				customerMessageProducer.send(UPDATE_CUSTOMER_MESSAGE_TOPIC, toSend);
 

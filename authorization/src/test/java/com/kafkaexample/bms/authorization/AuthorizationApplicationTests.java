@@ -1,13 +1,13 @@
 package com.kafkaexample.bms.authorization;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 
-@SpringBootTest
-class AuthorizationApplicationTests {
+import com.kafkaexample.bms.authorization.service.DetailsService;
 
-	@Test
-	void contextLoads() {
-	}
+@RunWith(Suite.class)
 
+@Suite.SuiteClasses({ AuthorizationControllerTest.class, DetailsService.class })
+
+public class AuthorizationApplicationTests {
 }

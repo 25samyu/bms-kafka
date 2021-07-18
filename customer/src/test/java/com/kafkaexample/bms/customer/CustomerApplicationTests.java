@@ -1,13 +1,11 @@
 package com.kafkaexample.bms.customer;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 
-@SpringBootTest
-class CustomerApplicationTests {
+@RunWith(Suite.class)
 
-	@Test
-	void contextLoads() {
-	}
+@Suite.SuiteClasses({ CustomerServiceControllerTest.class, CustomerServiceDaoImplTest.class })
 
+public class CustomerApplicationTests {
 }
