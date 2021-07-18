@@ -12,4 +12,7 @@ public interface CustomerRepository extends JpaRepository<Customer, String> {
 
 	@Query(value = "SELECT email FROM Customer c WHERE c.accountNumber = :accountNumber")
 	public String getEmailByAccountNumber(@Param("accountNumber") Long accountNumber);
+
+	public Customer findByCustomerId(Long customerId);
+
 }

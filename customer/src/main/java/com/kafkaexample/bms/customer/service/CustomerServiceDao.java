@@ -7,5 +7,12 @@ public interface CustomerServiceDao {
 
 	public String getEmail(Long accountNumber);
 
+	public boolean register(Customer customer);
+
+	public boolean update(Customer customer);
+
+	public Customer viewDetails(Long customerId);
+
+	public boolean validateToken(String token);
 
 }

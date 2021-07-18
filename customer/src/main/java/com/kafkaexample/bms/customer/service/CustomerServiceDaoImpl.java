@@ -2,6 +2,7 @@ package com.kafkaexample.bms.customer.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import com.kafkaexample.bms.customer.config.CustomerMessageProducer;
@@ -9,11 +10,14 @@ import com.kafkaexample.bms.customer.config.UserCredentialsProducer;
 import com.kafkaexample.bms.customer.model.Customer;
 import com.kafkaexample.bms.customer.model.UserCredentials;
 import com.kafkaexample.bms.customer.repository.CustomerRepository;
+import com.kafkaexample.bms.customer.restclient.AuthorizationClient;
 
 @Component
 public class CustomerServiceDaoImpl implements CustomerServiceDao {
 	@Autowired
 	CustomerRepository customerRepository;
+	@Autowired
+	AuthorizationClient authorizationClient;
 	@Autowired
 	private CustomerMessageProducer customerMessageProducer;
 	@Autowired
@@ -67,4 +71,49 @@ public class CustomerServiceDaoImpl implements CustomerServiceDao {
 		}
 	}
 
+	public boolean register(Customer customer) {
+		try {
+			customerRepository.save(customer);
+			userCredentialsProducer.send(USER_CREDENTIALS_TOPIC,
+					new UserCredentials(customer.getUsername(), customer.getPassword(), null));
+			return true;
+
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	public boolean update(Customer customer) {
+		try {
+			customerRepository.save(customer);
+			return true;
+
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	public Customer viewDetails(Long customerId) {
+		try {
+			return customerRepository.findByCustomerId(customerId);
+
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	public boolean validateToken(String token) {
+		try {
+			if (token == null)
+				return false;
+			HttpStatus loginStatusCode = authorizationClient.validateToken(token).getStatusCode();
+			if (loginStatusCode.equals(HttpStatus.OK)) {
+				return true;
+			} else {
+				return false;
+			}
+		} catch (Exception e) {
+			return false;
+		}
+	}
 }
