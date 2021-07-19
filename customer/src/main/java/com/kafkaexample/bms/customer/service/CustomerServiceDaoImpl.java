@@ -1,5 +1,7 @@
 package com.kafkaexample.bms.customer.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -12,10 +14,11 @@ import com.kafkaexample.bms.customer.model.UserCredentials;
 import com.kafkaexample.bms.customer.repository.CustomerRepository;
 import com.kafkaexample.bms.customer.restclient.AuthorizationClient;
 
-import jdk.internal.org.jline.utils.Log;
-
 @Component
 public class CustomerServiceDaoImpl implements CustomerServiceDao {
+	
+	private static final Logger logger = LoggerFactory.getLogger(CustomerServiceDaoImpl.class);
+
 	@Autowired
 	CustomerRepository customerRepository;
 	@Autowired
@@ -38,7 +41,7 @@ public class CustomerServiceDaoImpl implements CustomerServiceDao {
 	private String USER_CREDENTIALS_TOPIC;
 
 	public boolean registerOrUpdateCustomer(String topic, Customer customer) {
-		Log.info("Start");
+		logger.info("Start");
 		String[] toSend = new String[2];
 		toSend[0] = customer.getEmail();
 		try {
@@ -48,94 +51,94 @@ public class CustomerServiceDaoImpl implements CustomerServiceDao {
 			if (topic.equals("REGISTER_CUSTOMER_TOPIC")) {
 				toSend[1] = "Registered Successfully";
 				customerMessageProducer.send(REGISTER_CUSTOMER_MESSAGE_TOPIC, toSend);
-				Log.info("End - Register - Success");
+				logger.info("End - Register - Success");
 				return true;
 
 			} else if (topic.equals("UPDATE_CUSTOMER_TOPIC")) {
 				toSend[1] = "Updated Successfully";
 				customerMessageProducer.send(UPDATE_CUSTOMER_MESSAGE_TOPIC, toSend);
-				Log.info("End - Update - Success");
+				logger.info("End - Update - Success");
 				return true;
 			}
 		} catch (Exception e) {
 			toSend[1] = "Process Failed. Please try again.";
 			customerMessageProducer.send(FAILED_CUSTOMER_MESSAGE_TOPIC, toSend);
-			Log.error("End - Exception");
+			logger.error("End - Exception");
 			return false;
 		}
-		Log.info("End - Invalid topic - Failed");
+		logger.info("End - Invalid topic - Failed");
 		return false;
 	}
 
 	public String getEmail(Long accountNumber) {
-		Log.info("Start");
+		logger.info("Start");
 		try {
-			Log.info("End - Success");
+			logger.info("End - Success");
 			return customerRepository.getEmailByAccountNumber(accountNumber);
 
 		} catch (Exception e) {
-			Log.error("End - Exception");
+			logger.error("End - Exception");
 			return null;
 		}
 	}
 
 	public boolean register(Customer customer) {
-		Log.info("Start");
+		logger.info("Start");
 		try {
 			customerRepository.save(customer);
 			userCredentialsProducer.send(USER_CREDENTIALS_TOPIC,
 					new UserCredentials(customer.getUsername(), customer.getPassword(), null));
-			Log.info("End - Success");
+			logger.info("End - Success");
 			return true;
 
 		} catch (Exception e) {
-			Log.error("End - Exception");
+			logger.error("End - Exception");
 			return false;
 		}
 	}
 
 	public boolean update(Customer customer) {
-		Log.info("Start");
+		logger.info("Start");
 		try {
 			customerRepository.save(customer);
-			Log.info("End - Success");
+			logger.info("End - Success");
 			return true;
 
 		} catch (Exception e) {
-			Log.error("End - Exception");
+			logger.error("End - Exception");
 			return false;
 		}
 	}
 
 	public Customer viewDetails(Long customerId) {
-		Log.info("Start");
+		logger.info("Start");
 		try {
-			Log.info("End - Success");
+			logger.info("End - Success");
 			return customerRepository.findByCustomerId(customerId);
 
 		} catch (Exception e) {
-			Log.error("End - Exception");
+			logger.error("End - Exception");
 			return null;
 		}
 	}
 
 	public boolean validateToken(String token) {
-		Log.info("Start");
+		logger.info("Start");
 		try {
 			if (token == null) {
-				Log.info("End - Unauthorized");
+				logger.info("End - Unauthorized");
 				return false;
 			}
 			HttpStatus loginStatusCode = authorizationClient.validateToken(token).getStatusCode();
 			if (loginStatusCode.equals(HttpStatus.OK)) {
-				Log.info("End - Success");
+				logger.info("End - Success");
 				return true;
 			} else {
-				Log.info("End - Unauthorized");
+				logger.info("End - Unauthorized");
 				return false;
 			}
 		} catch (Exception e) {
-			Log.error("End - Exception");
+			logger.error("End - Exception");
 			return false;
 		}
 	}
