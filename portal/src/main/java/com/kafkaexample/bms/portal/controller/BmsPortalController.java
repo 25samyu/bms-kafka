@@ -1,7 +1,5 @@
 package com.kafkaexample.bms.portal.controller;
 
-import java.util.List;
-
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,12 +83,6 @@ public class BmsPortalController {
 		return "loan-history";
 	}
 
-	@GetMapping("/displayLoans")
-	public List<Loan> displayLoans() {
-		return bmsPortalService.returnLoans();
-
-	}
-
 	@PostMapping("/login")
 	public String login(@RequestBody UserCredentials userCredentials, HttpSession session, ModelMap warning) {
 		if (bmsPortalService.login(userCredentials, session, warning))
@@ -132,7 +124,6 @@ public class BmsPortalController {
 
 	@GetMapping("/home")
 	public String getHome(HttpSession session) {
-		System.out.println(session.getAttribute("TOKEN"));
 		if ((session == null) || (!bmsPortalService.validateToken((String) session.getAttribute("TOKEN"))))
 			return "redirect:/portal/logout";
 		return "home";

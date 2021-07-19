@@ -26,7 +26,7 @@ public class AuthorizationController {
 	private DetailsService detailsService;
 
 	@PostMapping("/login")
-	public ResponseEntity<?> login(@RequestBody UserCredentials userCredentials) {
+	public ResponseEntity<String> login(@RequestBody UserCredentials userCredentials) {
 		try {
 			final UserDetails userDetails = detailsService.loadUserByUsername(userCredentials.getUsername());
 			if (userDetails == null)
@@ -47,7 +47,7 @@ public class AuthorizationController {
 	}
 
 	@GetMapping("/validate")
-	public ResponseEntity<?> validateToken(@RequestHeader("Authorization") String token) {
+	public ResponseEntity<String> validateToken(@RequestHeader("Authorization") String token) {
 
 		if (token.length() < 10) {
 

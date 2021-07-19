@@ -59,7 +59,7 @@ public class BmsPortalServiceDaoImpl implements BmsPortalServiceDao {
 		try {
 			ResponseEntity<String> response = authorizationClient.login(userCredentials);
 			session.setAttribute("TOKEN", "Bearer " + response.getBody());
-			System.out.println("Bearer " + response.getBody());
+			//System.out.println("Bearer " + response.getBody());
 			return true;
 
 		} catch (Exception e) {

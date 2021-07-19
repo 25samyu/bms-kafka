@@ -2,21 +2,17 @@ package com.kafkaexample.bms.authorization.service;
 
 import java.util.ArrayList;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
-import com.kafkaexample.bms.authorization.controller.AuthorizationController;
 import com.kafkaexample.bms.authorization.model.UserCredentials;
 import com.kafkaexample.bms.authorization.repository.UserCredentialsRepository;
 
 @Service
 public class DetailsService implements UserDetailsService {
-	private static final Logger LOGGER = LoggerFactory.getLogger(AuthorizationController.class);
 
 	@Autowired
 	private UserCredentialsRepository userCredentialsRepository;
@@ -43,7 +39,6 @@ public class DetailsService implements UserDetailsService {
 			userCredentialsRepository.save(userCredentials);
 			return true;
 		} catch (Exception e) {
-			e.printStackTrace();
 			return false;
 		}
 	}
