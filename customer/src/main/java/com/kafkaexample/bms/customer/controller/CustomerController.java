@@ -13,6 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.kafkaexample.bms.customer.model.Customer;
 import com.kafkaexample.bms.customer.service.CustomerServiceDao;
 
+import jdk.internal.org.jline.utils.Log;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @RestController
 public class CustomerController {
 
@@ -21,32 +25,45 @@ public class CustomerController {
 
 	@GetMapping("/email")
 	public ResponseEntity<String> getEmail(@RequestParam Long accountNumber) {
+		Log.info("Start");
 		String email = customerService.getEmail(accountNumber);
 		if (email == null || email.length() == 0) {
+			Log.info("End - Email not found");
 			return new ResponseEntity<>("Email Not Found", HttpStatus.BAD_REQUEST);
 		} else {
+			Log.info("End - Success");
 			return new ResponseEntity<>(email, HttpStatus.OK);
 		}
 	}
 
 	@PostMapping("/register")
 	public ResponseEntity<Boolean> register(@RequestBody Customer customer) {
+		Log.info("Start");
+		Log.info("End - Success");
 		return new ResponseEntity<>(customerService.register(customer), HttpStatus.OK);
 	}
 
 	@PostMapping("/update")
 	public ResponseEntity<Boolean> update(@RequestHeader("Authorization") String token,
 			@RequestBody Customer customer) {
-		if (!customerService.validateToken(token))
+		Log.info("Start");
+		if (!customerService.validateToken(token)) {
+			Log.info("End - Unauthorized");
 			return new ResponseEntity<>(false, HttpStatus.FORBIDDEN);
+		}
+		Log.info("End - Success");
 		return new ResponseEntity<>(customerService.update(customer), HttpStatus.OK);
 	}
 
 	@GetMapping("/viewDetails")
 	public ResponseEntity<Customer> viewDetails(@RequestHeader("Authorization") String token,
 			@RequestParam Long customerId) {
-		if (!customerService.validateToken(token))
+		Log.info("Start");
+		if (!customerService.validateToken(token)) {
+			Log.info("End - Unauthorized");
 			return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
+		}
+		Log.info("End - Success");
 		return new ResponseEntity<>(customerService.viewDetails(customerId), HttpStatus.OK);
 	}
 

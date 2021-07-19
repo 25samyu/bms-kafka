@@ -15,8 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.kafkaexample.bms.loan.model.Loan;
 import com.kafkaexample.bms.loan.service.LoanServiceDao;
 
+import jdk.internal.org.jline.utils.Log;
+import lombok.extern.slf4j.Slf4j;
 import springfox.documentation.annotations.ApiIgnore;
 
+@Slf4j
 @RestController
 public class LoanController {
 	@Autowired
@@ -25,21 +28,31 @@ public class LoanController {
 	@ApiIgnore
 	@GetMapping("/retrieveLoan")
 	public void retrieveLoans(@RequestParam Long accountNumber) {
+		Log.info("Start");
+		Log.info("End - Success");
 		loanService.retrieveLoans(accountNumber);
 	}
 
 	@PostMapping("/applyLoan")
 	public ResponseEntity<Boolean> applyLoan(@RequestHeader("Authorization") String token, @RequestBody Loan loan) {
-		if (!loanService.validateToken(token))
+		Log.info("Start");
+		if (!loanService.validateToken(token)) {
+			Log.info("End - Unauthorized");
 			return new ResponseEntity<>(false, HttpStatus.FORBIDDEN);
+		}
+		Log.info("End - Success");
 		return new ResponseEntity<>(loanService.applyLoan(loan), HttpStatus.OK);
 	}
 
 	@GetMapping("/viewLoan")
 	public ResponseEntity<List<Loan>> viewLoans(@RequestHeader("Authorization") String token,
 			@RequestParam Long accountNumber) {
-		if (!loanService.validateToken(token))
+		Log.info("Start");
+		if (!loanService.validateToken(token)) {
+			Log.info("End - Unauthorized");
 			return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
+		}
+		Log.info("End - Success");
 		return new ResponseEntity<>(loanService.retrieveLoans(accountNumber), HttpStatus.OK);
 	}
 
