@@ -32,12 +32,6 @@ public class BmsPortalController {
 	@Value("${spring.kafka.topic.applyLoan}")
 	String APPLY_LOAN_TOPIC;
 
-	@Value("${spring.kafka.topic.login}")
-	String LOGIN_TOPIC;
-
-	@Value("${spring.kafka.topic.validateToken}")
-	String VALIDATE_TOKEN_TOPIC;
-
 	@PostMapping("/register")
 	public String register(@RequestBody Customer customer, ModelMap model) {
 
