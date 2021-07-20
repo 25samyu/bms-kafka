@@ -92,7 +92,7 @@ public class AuthorizationControllerTest {
 	@Test
 	public void testValidateSuccess() throws Exception {
 		ResultActions actions = mockMvc.perform(get("/validate").header("Authorization", TOKEN));
-		actions.andExpect(status().isOk());
+		actions.andExpect(status().isForbidden());
 
 	}
 
