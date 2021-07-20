@@ -38,4 +38,9 @@ http://localhost:7073/swagger-ui.html
   CustomerApplication  
   LoanApplication  
   AuthorizationApplication  
-  ZuulGatewayApplication
+  ZuulGatewayApplication  
+  
+  ### Testing Report
+  Customer Service - 95.9%
+  Loan Service - 96.7%
+  Authorization Service - 90.0%
